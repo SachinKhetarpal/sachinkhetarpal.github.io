@@ -1,0 +1,55 @@
+package com.company;
+
+import java.util.Scanner;
+
+public class CipherText {
+
+    public static String generateCipherText(String data){
+        char[] cipherText = new char[data.length()];
+        boolean minus = false; to store when to minus and when to do addition
+
+        for(int i =0; idata.length();i++){
+            if(minus)
+            {
+                cipherText[i]=shiftChar(data.charAt(i),-i-1);
+                minus=false;
+            }
+            else {
+                cipherText[i]=shiftChar(data.charAt(i),i+1);
+                minus=true;
+            }
+
+        }
+        return String.valueOf(cipherText);
+    }
+
+    public static char shiftChar(char c, int shiftValue){
+
+        int exactShift = 0;
+        if(c='a' && c='z'){
+            exactShift = ((c-'a'+shiftValue)%26);
+            if(exactShift=0){
+                return (char) (exactShift+'a');
+            }
+            else
+                return (char) (exactShift+'{');    here { is used because it comes after z as per
+                                                    ASCII value
+        }
+        else{
+            exactShift = ((c-'A'+shiftValue)%26);
+            if(exactShift=0){
+                return (char) (exactShift+'A');
+            }
+
+            else
+                return (char) (exactShift+'[');  '[' comes after Z , so if exactShift is negative we'll minus it from '['
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println(Enter the text );
+        String text = sc.nextLine();
+        System.out.println(generateCipherText(text));
+    }
+}

@@ -1,0 +1,37 @@
+package com.company;
+//Program to find the absolute difference between the sum of diagonals of a matrix.
+//Take the size of matrix from user in form N X N eg: 3X3 , 4X4 etc.
+
+import java.util.Scanner;
+
+public class DifferenceSumMatrixDiagonals {
+    static int difference(int arr[][], int n){
+
+        int d1 = 0 , d2 = 0; //used to store the sum of diagonals
+
+        for(int i=0;i<n;i++){
+            d1+=arr[i][i]; // add sum to d1 where row and column are same.(diagonal from left to right).
+            d2+=arr[i][n-i-1]; // add sum to d2 of diagonals from right to left,
+
+        }
+
+        return Math.abs(d1-d2);
+    }
+
+    public static void main(String[] args) {
+        System.out.println("enter the matrix size in form NXN N:");
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int arr[][] = new int[n][n];
+
+        //taking input from user in the matrix
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++)
+                arr[i][j]=sc.nextInt();
+        }
+        System.out.println("Absolute Difference of sum of diagonals = "+difference(arr,n));
+    }
+
+}
+
+

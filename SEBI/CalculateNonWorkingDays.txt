@@ -1,0 +1,72 @@
+package com.company;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+public class CalculateNonWorkingDays
+{
+    public static int calculateNonWorkingDays(Date inputDate,ArrayList<Integer> holidaysIntList){
+
+        Calendar startCal = Calendar.getInstance();
+        Calendar endCal = Calendar.getInstance();
+
+        startCal.setTime(inputDate);
+        endCal.setTime(inputDate);
+
+        startCal.set(Calendar.DAY_OF_MONTH,1); //setting start calendar to date 1 of the month
+
+        //setting end calendar to last date  of the month using getActualMaximum method
+        endCal.set(Calendar.DAY_OF_MONTH,endCal.getActualMaximum(Calendar.DAY_OF_MONTH));
+
+        System.out.println("start date = "+startCal.getTime());
+        System.out.println("end date = "+endCal.getTime());
+        int nonWorkingDays=0;
+        do{
+            if(startCal.get(Calendar.DAY_OF_WEEK)==Calendar.SATURDAY
+                    || startCal.get(Calendar.DAY_OF_WEEK)==Calendar.SUNDAY
+                    || holidaysIntList.contains(startCal.get(Calendar.DAY_OF_MONTH)))
+            {
+                ++nonWorkingDays;
+            }
+
+            startCal.add(Calendar.DAY_OF_MONTH,1); // this will increment the date by 1
+        }while (startCal.getTimeInMillis()<=endCal.getTimeInMillis());
+
+        return nonWorkingDays;
+    }
+    public static Date parseDate(String date)  {
+
+        try {
+            return new SimpleDateFormat("dd-MM-yyyy").parse(date);
+        }
+        catch (ParseException e){
+            return null;
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Enter date in the format dd-mm-yyyy");
+        Scanner sc = new Scanner(System.in);
+        String dateStr = sc.nextLine();
+        Date inputDate = parseDate(dateStr);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE"); // EEEE denotes day of week like monday tues etc.
+
+        System.out.println("Day of "+dateStr+" is "+sdf.format(inputDate));
+
+        System.out.print("Enter the dates of this month which are holidays (separated by commas):");
+        String holidays = sc.nextLine();
+        String[] holidaysList = holidays.split(",");
+        ArrayList<Integer> holidaysIntList = new ArrayList<>();
+        //converting string[] to Integer Array list which will be used further
+        for(String s:holidaysList){
+            holidaysIntList.add(Integer.valueOf(s));
+        }
+
+        System.out.println("Number of non working days in this month(including sat sun and holidays)");
+        System.out.println("Non Working Days = "+calculateNonWorkingDays(inputDate,holidaysIntList)); //we'll write one method which will calculate total non working days.
+
+
+    }
+}

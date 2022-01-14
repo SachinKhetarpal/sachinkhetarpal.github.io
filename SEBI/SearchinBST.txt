@@ -1,0 +1,83 @@
+package com.bst;
+
+import java.text.SimpleDateFormat;
+import java.util.Scanner;
+
+class Node{
+    int data;
+    Node left = null , right = null;
+
+    Node(int data){
+        this.data = data;
+    }
+}
+public class SearchinBST {
+    public static Node insert(Node root, int key){
+        if(root == null){
+            return new Node(key);
+        }
+
+        if(key<root.data){
+            root.left = insert(root.left,key);
+
+        }
+        else {
+            root.right = insert(root.right,key);
+        }
+
+        return root;
+    }
+
+    public static void search(Node root, int key, Node parent){
+
+        //if key is not present
+        if(root == null){
+            System.out.println("Key not found");
+            return;
+        }
+
+        //if key is found
+        if(root.data == key){
+            if(parent == null){
+                System.out.println("The node with key "+key+" is root node");
+            }
+            else if(key<parent.data){
+                System.out.println("The given key is the left node of the node with key"+parent.data);
+            }
+
+            else{
+                System.out.println("The given key is the right node of the node with key "+parent.data);
+            }
+            return;
+        }
+
+        //if key is in left subtree
+        if(key<root.data){
+            search(root.left,key,root);
+        }
+        //if key is in right subtree
+        else{
+            search(root.right,key,root);
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the number of elements to be inserted in BST");
+        int size = sc.nextInt();
+
+        System.out.println("Enter the value of the elements:");
+        Node root = null;
+        for(int i=0;i<size;i++){
+            int value=sc.nextInt();
+            root = insert(root,value);
+
+        }
+        System.out.println("Enter the key which needs to be searched");
+        int key = sc.nextInt();
+
+        search(root,key,null); // here null is the initial parent of the key
+        //Let us run this program and elements in the order 6,9,8,2,1,15,18,13,11
+        //This will form this BST shown in the right side.
+    }
+}
