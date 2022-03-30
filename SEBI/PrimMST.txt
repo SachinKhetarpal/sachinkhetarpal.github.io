@@ -1,0 +1,182 @@
+import java.util.*;
+
+class Edge{
+    private Node destination;
+    private int weight;
+
+    public void setDestination(Node destination) {
+        this.destination = destination;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public int getWeight() {
+        return this.weight;
+    }
+    public Node getDestination() {
+        return this.destination;
+    }
+
+}
+
+class Node implements Comparable<Node>{
+    private String label;
+    private final LinkedList<Edge> edges;
+    private int key;
+    Node() {
+        this.edges = new LinkedList<>();
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public void setKey(int key) {
+        this.key = key;
+    }
+    public String getLabel() {
+        return this.label;
+    }
+
+    public int getKey() { return this.key; }
+
+    public LinkedList<Edge> getEdges() {
+        return this.edges;
+    }
+
+    @Override
+    public int compareTo(Node o) {
+        return Integer.compare(this.getKey(), o.getKey());
+    }
+}
+
+public class PrimMST {
+
+    private final Node[] weightedGraph;
+
+    public PrimMST(int graphV) {
+
+        this.weightedGraph = new Node[graphV];
+        for (int i = 0; i < graphV; i++) {
+            this.weightedGraph[i] = new Node();
+        }
+    }
+
+    public void addEdge(String sourceLabel, String destinationLabel, int weight) {
+
+        Node sourceNode = null;
+        Node destinationNode = null;
+
+        for (Node node: this.weightedGraph) {
+            if (node.getLabel().contains(sourceLabel)) {
+                sourceNode = node;
+            }
+            if (node.getLabel().contains(destinationLabel)) {
+                destinationNode = node;
+            }
+        }
+
+        Edge e = new Edge();
+        e.setWeight(weight);
+        e.setDestination(destinationNode);
+        sourceNode.getEdges().add(e);
+
+    }
+
+    public void minimumSpanningTree(String root) {
+
+        int totalWeight=0;
+        boolean outputSpacing=true;
+        Node rootNode = null;
+        for (Node vertex : this.weightedGraph) {
+            vertex.setKey(Integer.MAX_VALUE);
+
+            if (vertex.getLabel().contains(root)) {
+                rootNode = vertex;
+            }
+        }
+
+        rootNode.setKey(0);
+
+        PriorityQueue<Node> nodePriorityQueue = new PriorityQueue<>();
+
+        nodePriorityQueue.addAll(Arrays.asList(this.weightedGraph));
+        while (!nodePriorityQueue.isEmpty()) {
+
+            Node u = nodePriorityQueue.peek();
+
+            LinkedList<Edge> uEdges = u.getEdges();
+            for (Edge e : uEdges) {
+                Node v = e.getDestination();
+                int u_vWeight = e.getWeight();
+                if (nodePriorityQueue.contains(e.getDestination()) && u_vWeight < v.getKey()) {
+                    nodePriorityQueue.remove(v);
+                    v.setKey(u_vWeight);
+                    nodePriorityQueue.add(v);
+                }
+            }
+
+            totalWeight+=u.getKey();
+            if(outputSpacing) {
+                System.out.print(u.getLabel());
+                outputSpacing=false;
+            }
+            else
+                System.out.print(" "+u.getLabel());
+            nodePriorityQueue.remove(u);
+        }
+        System.out.print("\n"+totalWeight);
+    }
+    public static void main(String[] args) {
+
+        String startNode = null;
+        int minWeight=Integer.MAX_VALUE;
+        Scanner sc = new Scanner(System.in);
+        int N = sc.nextInt();
+        int edges = sc.nextInt();
+        PrimMST graph = new PrimMST(N);
+
+        List<String> vertices = new ArrayList<>();
+        sc.nextLine();
+        int i = edges;
+        int pos = 0;
+
+        List<String> savingEdges = new ArrayList<>();
+
+        while (i > 0) {
+            String[] edgeDetail = sc.nextLine().split(" ");
+            if(!vertices.contains(edgeDetail[0]))
+            {
+                vertices.add(edgeDetail[0]);
+                graph.weightedGraph[pos].setLabel(edgeDetail[0]);
+                pos += 1;
+            }
+            if(!vertices.contains(edgeDetail[1]))
+            {
+                vertices.add(edgeDetail[1]);
+                graph.weightedGraph[pos].setLabel(edgeDetail[1]);
+                pos += 1;
+            }
+            if(minWeight>Integer.parseInt(edgeDetail[2]))
+            {
+                minWeight=Integer.parseInt(edgeDetail[2]);
+                startNode=(edgeDetail[0].compareToIgnoreCase(edgeDetail[1])<0)?edgeDetail[0]:edgeDetail[1];
+            }
+
+            savingEdges.add(edgeDetail[0]);
+            savingEdges.add(edgeDetail[1]);
+            savingEdges.add(edgeDetail[2]);
+            --i;
+        }
+        while(!savingEdges.isEmpty()) {
+            graph.addEdge(savingEdges.get(0), savingEdges.get(1), Integer.parseInt(savingEdges.get(2)));
+            graph.addEdge(savingEdges.get(1), savingEdges.get(0), Integer.parseInt(savingEdges.get(2)));
+            savingEdges.remove(0);
+            savingEdges.remove(0);
+            savingEdges.remove(0);
+        }
+        graph.minimumSpanningTree(startNode);
+    }
+}
