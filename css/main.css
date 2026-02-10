@@ -1,3 +1,111 @@
+.profile-card-modern {
+    color: #ffffff;
+}
+
+.profile-card-modern h1 {
+    color: #ffffff;
+}
+
+.profile-card-modern .designation {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.profile-card-modern .bio {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+
+/* Background Gradient */
+.intro {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    position: relative;
+    overflow: hidden;
+    color: #fff;
+}
+
+/* Glass Card */
+.profile-card-modern {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    padding: 50px 40px;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    max-width: 450px;
+    width: 100%;
+    transition: 0.4s ease;
+}
+
+.profile-card-modern:hover {
+    transform: translateY(-8px);
+}
+
+/* Profile Image */
+.profile-img img {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid rgba(255,255,255,0.5);
+    margin-bottom: 20px;
+}
+
+/* Name */
+.profile-card-modern h1 {
+    font-weight: 700;
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+/* Designation */
+.designation {
+    font-size: 15px;
+    opacity: 0.9;
+    margin-bottom: 20px;
+}
+
+/* Bio */
+.bio {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+/* Resume Button */
+.btn-resume {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 25px;
+    border-radius: 30px;
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.btn-resume:hover {
+    background: linear-gradient(45deg, #0072ff, #00c6ff);
+    transform: scale(1.05);
+    text-decoration: none;
+    color: #fff;
+}
+
+/* Social Icons */
+.social-links a {
+    display: inline-block;
+    margin: 0 10px;
+    font-size: 20px;
+    color: #fff;
+    transition: 0.3s;
+}
+
+.social-links a:hover {
+    color: #00c6ff;
+    transform: translateY(-4px);
+}
+
+
 * {
   box-sizing: border-box;
   margin: 0;
