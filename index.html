@@ -1,278 +1,810 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Hello World!</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- bootstrap 4.0.0-beta.2 -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
-        integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
-        crossorigin="anonymous">
-    <!-- main style -->
-    <link rel="stylesheet" type="text/css" href="css/main.css?v=2018.09.20">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sachin Khetarpal - Portfolio</title>
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
-    <!-- Global Site Tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-107490980-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments) };
-        gtag('js', new Date());
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        gtag('config', 'UA-107490980-1');
-    </script>
+        :root {
+            --bg-dark: #0a0e17;
+            --bg-darker: #060911;
+            --text-primary: #e4e6eb;
+            --text-secondary: #9ca3af;
+            --accent: #00e5ff;
+            --accent-dim: #0099b3;
+            --card-bg: #151922;
+            --border: rgba(255, 255, 255, 0.08);
+            --shadow: rgba(0, 0, 0, 0.5);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Archivo', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 1;
+        }
+
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+            background-size: 100px 100px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            background: rgba(10, 14, 23, 0.8);
+            border-bottom: 1px solid var(--border);
+            animation: slideDown 0.8s ease-out;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            z-index: 2;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-image {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            margin: 0 auto 2rem;
+            border: 4px solid var(--accent);
+            box-shadow: 0 0 40px rgba(0, 229, 255, 0.3);
+            object-fit: cover;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 1s ease-out 0.2s backwards;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-weight: 300;
+            animation: fadeInUp 1s ease-out 0.4s backwards;
+        }
+
+        .hero .bio {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            animation: fadeInUp 1s ease-out 0.6s backwards;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.8s backwards;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--bg-dark);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 229, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent);
+            color: var(--bg-dark);
+            transform: translateY(-2px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .social-links a {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:nth-child(1) {
+            /* LinkedIn */
+            color: #0077b5;
+        }
+
+        .social-links a:nth-child(1):hover {
+            background: #0077b5;
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 119, 181, 0.4);
+        }
+
+        .social-links a:nth-child(2) {
+            /* GitHub */
+            color: #ffffff;
+        }
+
+        .social-links a:nth-child(2):hover {
+            background: #ffffff;
+            color: #0a0e17;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .social-links a:nth-child(3) {
+            /* Stack Overflow */
+            color: #f48024;
+        }
+
+        .social-links a:nth-child(3):hover {
+            background: #f48024;
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(244, 128, 36, 0.4);
+        }
+
+        .social-links a:nth-child(4) {
+            /* Facebook */
+            color: #1877f2;
+        }
+
+        .social-links a:nth-child(4):hover {
+            background: #1877f2;
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(24, 119, 242, 0.4);
+        }
+
+        /* About Section */
+        .about-section {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5rem 2rem;
+            z-index: 2;
+        }
+
+        .about-container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--accent);
+        }
+
+        .terminal-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px var(--shadow);
+            margin-top: 3rem;
+        }
+
+        .terminal-header {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-dot:nth-child(1) { background: #ff5f56; }
+        .terminal-dot:nth-child(2) { background: #ffbd2e; }
+        .terminal-dot:nth-child(3) { background: #27c93f; }
+
+        .terminal-content {
+            padding: 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            line-height: 2;
+        }
+
+        .terminal-line {
+            display: flex;
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeInLeft 0.5s ease-out forwards;
+        }
+
+        .terminal-line:nth-child(1) { animation-delay: 0.2s; }
+        .terminal-line:nth-child(2) { animation-delay: 0.4s; }
+        .terminal-line:nth-child(3) { animation-delay: 0.6s; }
+        .terminal-line:nth-child(4) { animation-delay: 0.8s; }
+        .terminal-line:nth-child(5) { animation-delay: 1s; }
+
+        .prompt {
+            color: var(--accent);
+            margin-right: 1rem;
+        }
+
+        .command {
+            color: #818cf8;
+        }
+
+        .output {
+            color: var(--text-secondary);
+            display: block;
+            margin-left: 2rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-line {
+            width: 2px;
+            height: 40px;
+            background: linear-gradient(to bottom, transparent, var(--accent));
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero {
+                padding: 1rem;
+            }
+
+            .hero-image {
+                width: 150px;
+                height: 150px;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .terminal-content {
+                padding: 1rem;
+                font-size: 0.85rem;
+            }
+
+            .about-section {
+                padding: 3rem 1rem;
+            }
+        }
+
+        /* Canvas particles */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+    </style>
 </head>
 
 <body>
-    
-    <div class='site-container'>
-       
-        <section class="intro d-flex align-items-center justify-content-center">
-    <div id="particles-js"></div>
+    <!-- Background -->
+    <canvas id="particles-canvas"></canvas>
+    <div class="bg-grid"></div>
 
-    <div class="profile-wrapper text-center">
-        <div class="profile-card-modern">
-            
-            <!-- Profile Image -->
-            <div class="profile-img">
-                <img src="img/pic.jpg" alt="Sachin Khetarpal">
-            </div>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">&lt;SK /&gt;</div>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+        </ul>
+        <button class="mobile-menu-btn">☰</button>
+    </nav>
 
-            <!-- Name -->
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <img src="img/pic.jpg" alt="Sachin Khetarpal" class="hero-image">
             <h1>Sachin Khetarpal</h1>
-
-            <!-- Role -->
-            <p class="designation">
-                Technical Officer (IT) <br>
-                Directorate of Vigilance & Anti-Corruption
-            </p>
-
-            <!-- Bio -->
-            <p class="bio">
-                Passionate about Technology 🚀 <br>
-                Nature Lover 🌿
-            </p>
-
-            <!-- Resume Button -->
-            <a href="Resume/SachinKhetarpal.pdf" target="_blank" class="btn-resume">
-                Download Resume
-            </a>
-
-            <!-- Social Links -->
-            <div class="social-links mt-4">
-                <a href="https://linkedin.com/in/sachinkhetarpal" target="_blank">
-                    <i class="fa fa-linkedin"></i>
-                </a>
-                <a href="https://github.com/sachinkhetarpal" target="_blank">
-                    <i class="fa fa-github"></i>
-                </a>
-                <a href="https://stackoverflow.com/users/15378127/sachin-khetarpal" target="_blank">
-                    <i class="fa fa-stack-overflow"></i>
-                </a>
-                <a href="https://www.facebook.com/KhetarpalSachin" target="_blank">
-                    <i class="fa fa-facebook"></i>
-                </a>
+            <p class="subtitle">Technical Officer (IT)<br>Directorate of Vigilance & Anti-Corruption</p>
+            <p class="bio">Passionate about Technology 🚀<br>Nature Lover 🌿</p>
+            
+            <div class="cta-buttons">
+                <a href="Resume/SachinKhetarpal.pdf" target="_blank" class="btn btn-primary">Download Resume</a>
             </div>
 
+            <div class="social-links">
+                <a href="https://linkedin.com/in/sachinkhetarpal" target="_blank" aria-label="LinkedIn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                    </svg>
+                </a>
+                <a href="https://github.com/sachinkhetarpal" target="_blank" aria-label="GitHub">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                </a>
+                <a href="https://stackoverflow.com/users/15378127/sachin-khetarpal" target="_blank" aria-label="Stack Overflow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M15 21h-10v-2h10v2zm6-11.665l-1.621-9.335-1.993.346 1.62 9.335 1.994-.346zm-5.964 6.937l-9.746-.975-.186 2.016 9.755.879.177-1.92zm.538-2.587l-9.276-2.608-.526 1.954 9.306 2.5.496-1.846zm1.204-2.413l-8.297-4.864-1.029 1.743 8.298 4.865 1.028-1.744zm1.866-1.467l-5.339-7.829-1.672 1.14 5.339 7.829 1.672-1.14zm-2.644 4.195v8h-12v-8h-2v10h16v-10h-2z"/>
+                    </svg>
+                </a>
+                <a href="https://www.facebook.com/KhetarpalSachin" target="_blank" aria-label="Facebook">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
+                    </svg>
+                </a>
+            </div>
         </div>
-    </div>
-</section>
 
-        <div class="parallax-window" data-parallax="scroll" data-image-src="img/IndianMountains.jpg"></div>
-        <section>
-            <div class="about-me">
-                <div class="text-center">
-                    <img class="unselectable" src="img/about-me.png" height="100" width="550">
-                    <br><br>
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="about-container">
+            <h2 class="section-title">About Me</h2>
+            
+            <div class="terminal-box">
+                <div class="terminal-header">
+                    <div class="terminal-dot"></div>
+                    <div class="terminal-dot"></div>
+                    <div class="terminal-dot"></div>
                 </div>
-                <div class="clearfix"></div>
-                <div class="about-me__content" id="terminal-start">
+                <div class="terminal-content">
+                    <div class="terminal-line">
+                        <span class="prompt">sachin@portfolio:~$</span>
+                        <span class="command">echo $email</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="output">📧 contact@sachinkhetarpal.com</span>
+                    </div>
                     
-                    <br><br>
-                    <div class="command">
-                        <!-- email -->
-                        <p>echo $email</p>
-                        <span class="hideme">email: sachin0993@gmail.com</span>
-                        <!-- phone -->
-                        <p>echo $phone</p>
-                        <span class="hideme">phone: +91-807676XXXX</span>
-                        <!-- address -->
-                        <p>echo $address</p>
-                        <span class="hideme">address: Delhi, India</span>
-                        <!-- education -->
-                        <p>echo $education</p>
-                        <span class="hideme">Guru Gobind Singh Indraprastha University  • 2011 - 2015<br>
-                            B.Tech: Computer Science Engineering;</span>
-                        <!-- eligible_to_work -->
-                        <p>echo $nationality</p>
-                        <span class="hideme">Indian</span>
+                    <div class="terminal-line">
+                        <span class="prompt">sachin@portfolio:~$</span>
+                        <span class="command">echo $phone</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="output">📱 +91-807676XXXX</span>
+                    </div>
+                    
+                    <div class="terminal-line">
+                        <span class="prompt">sachin@portfolio:~$</span>
+                        <span class="command">echo $address</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="output">📍 Delhi, India</span>
+                    </div>
+                    
+                    <div class="terminal-line">
+                        <span class="prompt">sachin@portfolio:~$</span>
+                        <span class="command">echo $education</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="output">🎓 Guru Gobind Singh Indraprastha University • 2011 - 2015</span>
+                        <span class="output">   B.Tech: Computer Science Engineering</span>
+                    </div>
+                    
+                    <div class="terminal-line">
+                        <span class="prompt">sachin@portfolio:~$</span>
+                        <span class="command">echo $nationality</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="output">🇮🇳 Indian</span>
                     </div>
                 </div>
             </div>
-        </section>
-       
-        <div class="parallax-window" data-parallax="scroll" data-image-src="img/laptop.jpg"></div>
-        <!-- =================== script =================== -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
-        <script src="lib/parallax.js-1.4.2/parallax.min.js"></script>
-        <!-- Latest compiled and minified JavaScript -->
+        </div>
+    </section>
 
-        <!-- particles js -->
-        <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Vibrant particle network animation with mouse interaction
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-        <!-- bootstrap 4.0.0-beta.2 -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
-            crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
-            crossorigin="anonymous"></script>
+        const particles = [];
+        const particleCount = 120;
+        const mouse = {
+            x: null,
+            y: null,
+            radius: 150
+        };
 
-        <!-- main js file -->
-        <script src="js/main.js"></script>
+        // Track mouse movement
+        window.addEventListener('mousemove', function(event) {
+            mouse.x = event.x;
+            mouse.y = event.y;
+        });
 
-        <script>
-            $(document).ready(function () {
+        window.addEventListener('mouseout', function() {
+            mouse.x = null;
+            mouse.y = null;
+        });
 
-                // random style on page load
-                let display_text = ''
-                styleSpace();
-                display_text = 'Resume'
-               
-                $('#selstyle').text(display_text);
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.8;
+                this.vy = (Math.random() - 0.5) * 0.8;
+                this.radius = Math.random() * 2.5 + 1;
+                this.baseX = this.x;
+                this.baseY = this.y;
+            }
 
-                
-
-                /*-------------------------------
-                    terminal linux style
-                -------------------------------*/
-                var about_me_content_displayed = false;
-                var $lines = $('.command p');
-                $lines.hide();
-
-                var lineContents = [];
-                var output = [];
-
-                var terminal = function () {
-                    var skip = 0;
-                    typeLine = function (idx) {
-                        idx == null && (idx = 0);
-                        var element = $lines.eq(idx);
-                        var content = lineContents[idx];
-                        if (typeof content == "undefined") {
-                            $('.skip').hide();
-                            return;
-                        }
-                        var charIdx = 0;
-                        var typeChar = function () {
-                            var rand = Math.round(Math.random() * 150) + 20;
-
-                            setTimeout(function () {
-                                var char = content[charIdx++];
-                                element.append(char);
-                                if (typeof char !== "undefined")
-                                    typeChar();
-                                else {
-                                    element.append('<br/><span class="output">' + output[idx] + '</span>');
-                                    element.removeClass('active');
-                                    typeLine(++idx);
-                                }
-                            }, skip ? 0 : rand);
-                        }
-                        element.append('[sachin@ip-127-0-0-1 ~]$ ').addClass('active');
-                        typeChar();
+            update() {
+                // Mouse interaction - particles attract towards cursor
+                if (mouse.x != null && mouse.y != null) {
+                    const dx = mouse.x - this.x;
+                    const dy = mouse.y - this.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < mouse.radius) {
+                        const force = (mouse.radius - distance) / mouse.radius;
+                        const directionX = dx / distance;
+                        const directionY = dy / distance;
+                        
+                        // Changed to 0.5 for very slow, smooth attraction
+                        this.x += directionX * force * 0.5;
+                        this.y += directionY * force * 0.5;
                     }
+                }
 
-                    $lines.each(function (i) {
-                        lineContents[i] = $(this).text();
-                        output[i] = $(this).next('span').html();
-                        $(this).text('').show();
+                // Normal movement
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(0, 229, 255, 0.6)';
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = 'rgba(0, 229, 255, 0.5)';
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+
+            // Connect nearby particles with visible lines
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 180) {
+                        ctx.beginPath();
+                        const opacity = 0.4 * (1 - distance / 180);
+                        ctx.strokeStyle = `rgba(0, 229, 255, ${opacity})`;
+                        ctx.lineWidth = 1.5;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            // Connect particles to mouse
+            if (mouse.x != null && mouse.y != null) {
+                particles.forEach(particle => {
+                    const dx = mouse.x - particle.x;
+                    const dy = mouse.y - particle.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < mouse.radius) {
+                        ctx.beginPath();
+                        const opacity = 0.5 * (1 - distance / mouse.radius);
+                        ctx.strokeStyle = `rgba(0, 229, 255, ${opacity})`;
+                        ctx.lineWidth = 2;
+                        ctx.moveTo(particle.x, particle.y);
+                        ctx.lineTo(mouse.x, mouse.y);
+                        ctx.stroke();
+                    }
+                });
+
+                // Draw mouse glow
+                ctx.beginPath();
+                ctx.arc(mouse.x, mouse.y, 5, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(0, 229, 255, 0.4)';
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = 'rgba(0, 229, 255, 0.7)';
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
                     });
-                    typeLine();
-                }
-
-                $(window).scroll(function () {
-                    var hT = $('#terminal-start').offset().top,
-                        hH = $('#terminal-start').outerHeight(),
-                        wH = $(window).height(),
-                        wS = $(this).scrollTop() - 250;
-                    if (wS > (hT + hH - wH) && !about_me_content_displayed) {
-                        about_me_content_displayed = true;
-                        terminal();
-                    }
-                });// end terminal style -------
-
-                $('section').each(function () {
-                    $('.slider-navigation').prepend('<div class="tick"></div>');
-                });
-
-                $('.tick').on('click', function () {
-                    var tickIndex = $(this).index();
-                    $('body').scrollTop($(window).height() * tickIndex);
-                });
-
-                updatePos();
-            }); // end document ready -------
-
-            var isDragging = false;
-            var sliderTop, pointerPos, currentSection;
-
-            var bodyHeight = $('body').height();
-            var sliderHeight = $('.slider-navigation').height();
-            var elementHeight = $('section').height();
-            var sectionAmount = $('section').length;
-            var scale = (bodyHeight - (elementHeight)) / (sliderHeight - $('.nav-pointer').outerHeight());
-
-            var waitForFinalEvent = (function () {
-                var timers = {};
-                return function (callback, ms, uniqueId) {
-                    if (!uniqueId) {
-                        uniqueId = "resize";
-                    }
-                    if (timers[uniqueId]) {
-                        clearTimeout(timers[uniqueId]);
-                    }
-                    timers[uniqueId] = setTimeout(callback, ms);
-                };
-            })();
-
-            function updatePos() {
-                currentSection = $(window).scrollTop() / elementHeight;
-                currentSectionNum = Math.ceil(currentSection + 0.01);
-                sliderTop = $(window).scrollTop() / scale;
-                $('.nav-pointer').css('top', sliderTop).text(currentSectionNum + '/' + sectionAmount);
-            }
-
-            function sliderMove(e) {
-                $('body').scrollTop(parseInt(e) * scale);
-            }
-
-            $(window).scroll(function () {
-                if (!isDragging) {
-                    updatePos();
                 }
             });
+        });
 
-            $(window).resize(function () {
-                waitForFinalEvent(function () {
-                    bodyHeight = $('body').height();
-                    sliderHeight = $('.slider-navigation').height();
-                    elementHeight = $('section').height();
-                    sectionAmount = $('section').length;
-                    scale = (bodyHeight - (elementHeight)) / (sliderHeight - $('.nav-pointer').outerHeight());
-
-                    updatePos();
-                }, 500, "resizing");
-            });
-
-            // Steve Jobs Quotes
-            console.log("\n \t Your work is going to fill a large part of your life,\n and the only way to be " +
-                "truly satisfied is to do what you \n believe is great work. And the only way to do great" +
-                " work \n is to love what you do. If you haven't found it yet, keep \n looking. Don't settle." +
-                " As with all matters of the heart, \n you'll know when you find it.\n\n\n \t\t\t\t\t\t\t\t\t\t\t " +
-                "Steve Jobs \n\n");
-
-        </script>
+        // Console quote
+        console.log("\n \t Your work is going to fill a large part of your life,\n and the only way to be " +
+            "truly satisfied is to do what you \n believe is great work. And the only way to do great" +
+            " work \n is to love what you do. If you haven't found it yet, keep \n looking. Don't settle." +
+            " As with all matters of the heart, \n you'll know when you find it.\n\n\n \t\t\t\t\t\t\t\t\t\t\t " +
+            "Steve Jobs \n\n");
+    </script>
 </body>
 
 </html>
